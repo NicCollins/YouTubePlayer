@@ -12,6 +12,14 @@ var button = ToggleButton({
   onChange: handleChange
 });
 
+var panel = panels.Panel({
+  width: 512,
+  height: 290,
+  contentURL: './player.html',
+  contentScriptFile: './player.js',
+  onHide: handleHide
+});
+
 var menuItem = contextMenu.Item({
   label: "Log Selection",
   context: contextMenu.SelectorContext("a[href]"),
@@ -20,12 +28,10 @@ var menuItem = contextMenu.Item({
                  '});',
   onMessage: function (imgSrc) {
     console.log(imgSrc);
+	var videoId = imgSrc.split('=')[1];
+	console.log(videoId);
+	panel.port.emit('cue-video', videoId);
   }
-});
-
-var panel = panels.Panel({
-  contentURL: 'http://www.youtube.com',
-  onHide: handleHide
 });
 
 function handleChange(state) {
