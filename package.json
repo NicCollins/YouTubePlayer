@@ -1,6 +1,6 @@
 {
-  "title": "YouTube Player",
-  "name": "ytpopup",
+  "title": "YouTube Temp Playlist",
+  "name": "yt_temp_player",
   "version": "0.1.0",
   "description": "YouTube player addon",
   "main": "index.js",
