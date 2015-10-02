@@ -1,7 +1,7 @@
 {
   "title": "YouTube Temp Playlist",
   "name": "yt_temp_player",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "YouTube player addon",
   "main": "index.js",
   "author": "Nicolas A. Collins",
