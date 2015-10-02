@@ -1,7 +1,7 @@
 {
   "title": "YouTube Player",
   "name": "ytpopup",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "YouTube player addon",
   "main": "index.js",
   "author": "Nicolas A. Collins",

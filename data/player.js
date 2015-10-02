@@ -1,13 +1,23 @@
+//Load video list and current position from session storage
 var videoIds = JSON.parse(sessionStorage.getItem("videoIds")) || [];
 var currentVideoPosition = JSON.parse(sessionStorage.getItem("currentVideoPosition")) || 0;
 
+
+//Listeners from contect menu actions
 self.port.on('cue-video', function(text) {
-  console.log(text);
-  videoIds.push(text);
-  console.log(videoIds);
-  if (videoIds.length == 1) {
-	updateUrl();
-  }
+	cueVideo(text);
+});
+
+self.port.on('clear-video', function() {
+	clearPlaylist();
+});
+
+self.port.on('play-video', function() {
+	playVideo();
+});
+
+self.port.on('pause-video', function() {
+	pauseVideo();
 });
 
 self.port.on('next-video', function() {
@@ -18,6 +28,7 @@ self.port.on('previous-video', function() {
 	previousVideo();
 });
 
+//Get player from the DOM and add event listener
 if (videoIds.length > 0) {
 	var player = document.getElementsByClassName('html5-main-video')[0]
 
@@ -28,10 +39,38 @@ if (videoIds.length > 0) {
 	}
 }
 
+//Event listener action
 function myHandler(e) {
 	console.log('Video ended');
-	currentVideoPosition++;
-	window.location.href = 'http://www.youtube.com/watch?v=' + videoIds[currentVideoPosition];
+	nextVideo();
+}
+
+//Functions for video interaction from context menu
+function cueVideo(videoId) {
+	console.log('VideoId added: ' + videoId);
+	videoIds.push(videoId);
+	sessionStorage.setItem("videoIds", JSON.stringify(videoIds));
+	console.log('VideoId array: ' + videoIds);
+	if (videoIds.length == 1) {
+		updateUrl();
+	}
+}
+
+function clearPlaylist() {
+	videoIds = [];
+	currentVideoPosition = 0;
+	sessionStorage.setItem("videoIds", JSON.stringify(videoIds));
+	sessionStorage.setItem("currentVideoPosition", JSON.stringify(currentVideoPosition));
+	
+	window.location.href = 'http://www.youtube.com';
+}
+
+function playVideo() {
+	player.play();
+}
+
+function pauseVideo() {
+	player.pause();
 }
 
 function nextVideo() {
@@ -54,9 +93,9 @@ function previousVideo() {
 	}
 }
 
+//Function to update the panel state and update position variable
 function updateUrl() {
 	console.log('Video loaded: ' + videoIds[currentVideoPosition]);
-	sessionStorage.setItem("videoIds", JSON.stringify(videoIds));
 	sessionStorage.setItem("currentVideoPosition", JSON.stringify(currentVideoPosition));
 	window.location.href = 'http://www.youtube.com/watch?v=' + videoIds[currentVideoPosition];
 }
