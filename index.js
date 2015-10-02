@@ -3,6 +3,7 @@ var { ToggleButton } = require('sdk/ui/button/toggle');
 var contextMenu = require("sdk/context-menu");
 var panels = require("sdk/panel");
 var self = require("sdk/self");
+var notifications = require("sdk/notifications");
 
 //Setup toggle to attach panel to
 var button = ToggleButton({
@@ -53,6 +54,7 @@ var menu = contextMenu.Menu({
 	contextMenu.Item({ label: "Pause", data: "pause" }),
     contextMenu.Item({ label: "Next Video", data: "next" }),
     contextMenu.Item({ label: "Previous Video", data: "previous" }),
+	contextMenu.Item({ label: "Restart Playlist", data: "restart" }),
 	contextMenu.Item({ label: "Clear", data: "clear" }),
   ],
   onMessage: function (command) {
@@ -72,3 +74,11 @@ function handleChange(state) {
 function handleHide() {
   button.state('window', {checked: false});
 }
+
+//Port listeners
+panel.port.on('playlist-alert', function(text) {
+	notifications.notify({
+		title: 'Youtube Player',
+		text: text
+	});
+});
